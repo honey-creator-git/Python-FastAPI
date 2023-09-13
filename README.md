@@ -1,12 +1,14 @@
-# Securing FastAPI with JWT Token-based Authentication
+# REEACT FASTAPI based on Python
 
-### Want to learn how to build this?
+## User Authentication - SignUp
 
-Check out the [post](https://testdriven.io/blog/fastapi-jwt-auth/).
+1. User Field
 
-## Want to use this project?
-
-1. Fork/Clone
+    {
+        "full_name": "...",
+        "email": "...",
+        "password": "..."
+    }
 
 1. Create and activate a virtual environment:
 
