@@ -5,10 +5,16 @@ import datetime
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
+def verify_password(plain_password, hashed_password):
+        return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
 class UserRepo:
     
     async def create(db: Session, user: schema.UserCreate):
-        hashed_password = pwd_context.hash(user.password)
+        hashed_password = get_password_hash(user.password)
         created_at = datetime.datetime.now()
         created_year = str(created_at.year)
         created_month = str(created_at.month)
@@ -21,3 +27,11 @@ class UserRepo:
     
     async def fetch_by_email(db: Session, email):
         return db.query(model.User).filter(model.User.email == email).first()
+    
+    async def fetch_by_email_password(db: Session, email, password):
+        user = db.query(model.User).filter(model.User.email == email).first()
+        if not user:
+            return "User not exist"
+        if not verify_password(password, user.password):
+            return "Password is not correct"
+        return user

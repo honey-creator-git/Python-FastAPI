@@ -72,13 +72,13 @@ async def add_post(post: PostSchema) -> dict:
 #     return signJWT(user.email)
 
 
-@app.post("/user/login", tags=["user"])
-async def user_login(user: UserLoginSchema = Body(...)):
-    if check_user(user):
-        return signJWT(user.email)
-    return {
-        "error": "Wrong login details!"
-    }
+# @app.post("/user/login", tags=["user"])
+# async def user_login(user: UserLoginSchema = Body(...)):
+#     if check_user(user):
+#         return signJWT(user.email)
+#     return {
+#         "error": "Wrong login details!"
+#     }
     
 @app.post("/user/signup", tags=["User"])
 async def create_user(user_request: schema.UserCreate, db: Session = Depends(get_db)):
@@ -87,7 +87,6 @@ async def create_user(user_request: schema.UserCreate, db: Session = Depends(get
     """
     
     db_user = await UserRepo.fetch_by_email(db, email=user_request.email)
-    print("user email => ", user_request.email)
     if db_user:
         raise HTTPException(status_code=400, detail="User already exists!")
     
@@ -97,3 +96,22 @@ async def create_user(user_request: schema.UserCreate, db: Session = Depends(get
         "user": created_user,
         "jwt": jwt
     }
+    
+@app.post("/user/login", tags=["User"])
+async def login(user_request: schema.UserLogin, db: Session = Depends(get_db)):
+    """
+        Login User with Email and Password
+    """
+    
+    db_user = await UserRepo.fetch_by_email_password(db, email=user_request.email, password=user_request.password)
+    if db_user != "User not exist" and db_user != "Password is not correct":
+        jwt = signJWT(user_request.email)
+        return {
+            "user": db_user,
+            "jwt": jwt
+        }
+    
+    return {
+        "status": db_user
+    }
+    
