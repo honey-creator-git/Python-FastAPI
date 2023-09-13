@@ -1,9 +1,13 @@
-from fastapi import FastAPI, Body, Depends
+from fastapi import Depends, FastAPI, HTTPException, Body, Depends
 
 from app.model import PostSchema, UserSchema, UserLoginSchema
 from app.auth.auth_bearer import JWTBearer
 from app.auth.auth_handler import signJWT
 
+from sqlalchemy.orm import Session
+import app.user.schema as schema
+from database import get_db, engine
+from app.user.repository import UserRepo
 
 posts = [
     {
@@ -62,10 +66,10 @@ async def add_post(post: PostSchema) -> dict:
     }
 
 
-@app.post("/user/signup", tags=["user"])
-async def create_user(user: UserSchema = Body(...)):
-    users.append(user)  # replace with db call, making sure to hash the password first
-    return signJWT(user.email)
+# @app.post("/user/signup", tags=["user"])
+# async def create_user(user: UserSchema = Body(...)):
+#     users.append(user)  # replace with db call, making sure to hash the password first
+#     return signJWT(user.email)
 
 
 @app.post("/user/login", tags=["user"])
@@ -75,3 +79,16 @@ async def user_login(user: UserLoginSchema = Body(...)):
     return {
         "error": "Wrong login details!"
     }
+    
+@app.post("/user/signup", tags=["User"])
+async def create_user(user_request: schema.UserCreate, db: Session = Depends(get_db)):
+    """
+        Create a User and store it in the database
+    """
+    
+    db_user = await UserRepo.fetch_by_email(db, email=user_request.email)
+    print("user email => ", user_request.email)
+    if db_user:
+        raise HTTPException(status_code=400, detail="User already exists!")
+    
+    return await UserRepo.create(db=db, user=user_request)
