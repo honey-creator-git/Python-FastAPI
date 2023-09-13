@@ -91,4 +91,9 @@ async def create_user(user_request: schema.UserCreate, db: Session = Depends(get
     if db_user:
         raise HTTPException(status_code=400, detail="User already exists!")
     
-    return await UserRepo.create(db=db, user=user_request)
+    created_user = await UserRepo.create(db=db, user=user_request)
+    jwt = signJWT(user_request.email)
+    return {
+        "user": created_user,
+        "jwt": jwt
+    }
