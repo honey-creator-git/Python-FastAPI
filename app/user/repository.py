@@ -35,3 +35,27 @@ class UserRepo:
         if not verify_password(password, user.password):
             return "Password is not correct"
         return user
+    
+    async def update_user_by_id(db: Session, user: schema.UserUpdate, id: int):
+        db_user = db.query(model.User).filter(model.User.id == id).first()
+        if not db_user:
+            return "User not exist to update"
+        
+        # Update Model Class Variable from requestedd fields
+        for var, value in vars(user).items():
+            if (var == "password"):
+                hashed_updated_pass = get_password_hash(value)
+                setattr(db_user, var, hashed_updated_pass)
+            if not (var == "password"):
+                setattr(db_user, var, value) if value else None
+            
+        updated_at = datetime.datetime.now()
+        updated_year = str(updated_at.year)
+        updated_month = str(updated_at.month)
+        updated_day = str(updated_at.day)
+        
+        db_user.updated_at = updated_year+"-"+updated_month+"-"+updated_day
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+        return db_user

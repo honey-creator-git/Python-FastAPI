@@ -14,7 +14,7 @@ class User(Base):
     payment_verified = Column(Boolean)
     email_verified = Column(Boolean)
     subcription_at = Column(String(80))
-    subscription_expired = Column(Boolean)
+    subscription_expired = Column(Integer)
     role = Column(Integer)
     def __repr__(self):
         return 'UserModel(email=%s, full_name=%s, password=%s, google_id=%s, updated_at=%s, created_at=%s, payment_verified=%s, email_verified=%s, subcription_at=%s, subscription_expired=%s, role=%s)' % (self.email, self.full_name, self.password, self.google_id, self.updated_at, self.created_at, self.payment_verified, self.email_verified, self.subcription_at, self.subscription_expired, self.role)

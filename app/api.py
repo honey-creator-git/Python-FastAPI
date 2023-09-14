@@ -63,6 +63,22 @@ async def login(user_request: userSchema.UserLogin, db: Session = Depends(get_db
         "status": db_user
     }
     
+@app.put("/user/update/{user_id}", dependencies=[Depends(JWTBearer())], tags=["User"])
+async def update_user(user_id: int, user_request: userSchema.UserUpdate, db: Session = Depends(get_db)):
+    """
+        Update User with id
+    """
+    
+    db_user = await UserRepo.update_user_by_id(db, user=user_request, id=user_id)
+    if db_user != "User not exist to update":
+        return {
+            "updated_user": db_user
+        }
+    return {
+        "status": db_user
+    }
+
+    
 @app.post("/checkout", dependencies=[Depends(JWTBearer())], tags=["Payment"])
 async def create_payment(checkout_request: paymentSchema.CheckOut):
     """
