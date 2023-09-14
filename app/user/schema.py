@@ -1,9 +1,9 @@
-from typing import List, Optional
+from typing import Optional
 from pydantic import EmailStr
 from pydantic import BaseModel
 
 class UserBase(BaseModel):
-    email: str
+    email: EmailStr
     full_name: str
     password: str
     google_id: Optional[str] = None
@@ -21,6 +21,3 @@ class UserCreate(UserBase):
 class UserLogin(BaseModel):
     email: str
     password: str
-    
-class CheckOut(BaseModel):
-    amount: int
