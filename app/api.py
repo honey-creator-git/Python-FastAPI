@@ -1,4 +1,5 @@
 from fastapi import Depends, FastAPI, HTTPException, Body, Depends
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.model import PostSchema, UserSchema, UserLoginSchema
 from app.auth.auth_bearer import JWTBearer
@@ -8,6 +9,9 @@ from sqlalchemy.orm import Session
 import app.user.schema as schema
 from database import get_db, engine
 from app.user.repository import UserRepo
+from decouple import config
+
+import stripe
 
 posts = [
     {
@@ -21,6 +25,15 @@ users = []
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+stripe.api_key = config("STRIPE_SECRET")
 
 # helpers
 
@@ -114,4 +127,24 @@ async def login(user_request: schema.UserLogin, db: Session = Depends(get_db)):
     return {
         "status": db_user
     }
+    
+@app.post("/checkout", dependencies=[Depends(JWTBearer())], tags=["Payment"])
+async def create_payment(checkout_request: schema.CheckOut):
+    """
+        Get Stripe Client Secret
+    """
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount = checkout_request.amount * 100,
+            currency = "JPY",
+        )
+        
+        client_secret = intent['client_secret']
+        return {
+            "client_secret": client_secret
+        }
+    except Exception as e:
+        return {"error": str(e)}
+    
+    
     

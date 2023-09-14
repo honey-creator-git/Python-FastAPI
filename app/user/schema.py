@@ -21,3 +21,6 @@ class UserCreate(UserBase):
 class UserLogin(BaseModel):
     email: str
     password: str
+    
+class CheckOut(BaseModel):
+    amount: int
