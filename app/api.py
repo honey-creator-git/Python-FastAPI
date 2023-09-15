@@ -12,6 +12,8 @@ from app.user.repository import UserRepo
 from app.payment.repository import PaymentLogRepo
 from decouple import config
 
+from serpapi import GoogleSearch
+
 import stripe
 
 app = FastAPI()
@@ -107,3 +109,23 @@ async def payment_log(paymentLog_request: paymentSchema.PaymentLog, db: Session=
     return {
         "payment_log": payment_log
     }
+
+@app.get("/googleSearch/{search_keyword}", dependencies=[Depends(JWTBearer())], tags=["GoogleSearch"])
+async def google_search(search_keyword: str):
+    """
+        Google Search with Keyword
+    """
+    
+    search = GoogleSearch({
+        "q": search_keyword,
+        "location": "Austin,Texas",
+        "serp_api_key": config('SerpAPI_Key_Google_Search')
+    })
+    
+    result = search.get_dict()
+
+    return {
+        "result_search": result
+    }    
+    
+    
