@@ -116,16 +116,38 @@ async def google_search(search_keyword: str):
         Google Search with Keyword
     """
     
+    search_images_links = []
+    
     search = GoogleSearch({
         "q": search_keyword,
         "location": "Austin,Texas",
         "serp_api_key": config('SerpAPI_Key_Google_Search')
     })
     
-    result = search.get_dict()
+    result = search.get_dict()    
+    
+    search_result = search.get_dictionary()
+    
+    account = search.get_account()
+    
+    search_id = search_result.get("search_metadata").get("id")
+    
+    # for image_result in search.get_dict()['images_results']:
+    #     link = image_result["original"]
+    #     try:
+    #         search_images_links.push(link)
+    #         # wget.download(link, '.')
+    #     except:
+    #         pass
+    
+    dictionaries = search.get_dict()
+    print("Dictionaries => ", dictionaries)
 
     return {
-        "result_search": result
+        "result_search": result,
+        "search_id": search_id,
+        "account_information": account
+        # "image_links": search_images_links
     }    
     
     
