@@ -148,8 +148,8 @@ async def google_search(search_keyword: str, start:int, num: int, db: Session=De
             count = count + 1
 
         return {
-            "organic_result": organic_results,
-            "search_id": search_id
+            "search_id": search_id,
+            "status": "Search successfully!!!"
         }    
     
     
