@@ -7,9 +7,11 @@ from app.auth.auth_handler import signJWT
 from sqlalchemy.orm import Session
 import app.user.schema as userSchema
 import app.payment.schema as paymentSchema
+import app.googleSearchResult.schema as googleSearchResultSchema
 from database import get_db
 from app.user.repository import UserRepo
 from app.payment.repository import PaymentLogRepo
+from app.googleSearchResult.repository import GoogleSearchResult
 from decouple import config
 
 from serpapi import GoogleSearch
@@ -111,43 +113,43 @@ async def payment_log(paymentLog_request: paymentSchema.PaymentLog, db: Session=
     }
 
 @app.get("/googleSearch/{search_keyword}", dependencies=[Depends(JWTBearer())], tags=["GoogleSearch"])
-async def google_search(search_keyword: str):
+async def google_search(search_keyword: str, start:int, num: int, db: Session=Depends(get_db)):
     """
         Google Search with Keyword
     """
-    
-    search_images_links = []
-    
-    search = GoogleSearch({
-        "q": search_keyword,
-        "location": "Austin,Texas",
-        "serp_api_key": config('SerpAPI_Key_Google_Search')
-    })
-    
-    result = search.get_dict()    
-    
-    search_result = search.get_dictionary()
-    
-    account = search.get_account()
-    
-    search_id = search_result.get("search_metadata").get("id")
-    
-    # for image_result in search.get_dict()['images_results']:
-    #     link = image_result["original"]
-    #     try:
-    #         search_images_links.push(link)
-    #         # wget.download(link, '.')
-    #     except:
-    #         pass
-    
-    dictionaries = search.get_dict()
-    print("Dictionaries => ", dictionaries)
+    if num:
+        search = GoogleSearch({
+            "q": search_keyword,
+            "location": "Austin,Texas",
+            "serp_api_key": config('SerpAPI_Key_Google_Search'),
+            "start": start,
+            "num": num
+        })
+        
+        search_result = search.get_dictionary()
+        
+        search_id = search_result.get("search_metadata").get("id")
+        
+        organic_results = search_result.get('organic_results')
+        
+        count = 0
+        
+        while(count < len(organic_results)):
+            organic_result = organic_results[count]
+            googleSearchResult = {
+                "search_id": search_id,
+                "title": organic_result["title"],
+                "link": organic_result["link"],
+                "snippet": organic_result["snippet"]
+            }
+            createdGoogleSearchResult = await GoogleSearchResult.create(db=db, googleSearchResult=googleSearchResult)
+            print("Created_Google_Search_Result => ", createdGoogleSearchResult)
+            
+            count = count + 1
 
-    return {
-        "result_search": result,
-        "search_id": search_id,
-        "account_information": account
-        # "image_links": search_images_links
-    }    
+        return {
+            "organic_result": organic_results,
+            "search_id": search_id
+        }    
     
     
