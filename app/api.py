@@ -194,7 +194,13 @@ async def handle_message(handleMessageRequest: messagingSchema.Messaging, db: Se
     """
     
     return True
+
+@app.get("/get_paymentLog", dependencies=[Depends(JWTBearer())], tags=["Payment"])
+async def get_payment_log(start: int, limit: int, db: Session = Depends(get_db)):
+    """
+        Get Payment Logs with start and limit
+    """
     
-    
-    
+    paymentLogs = await PaymentLogRepo.get(db=db, start=start, limit=limit)
+    return paymentLogs
     

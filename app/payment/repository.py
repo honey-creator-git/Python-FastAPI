@@ -14,3 +14,10 @@ class PaymentLogRepo:
         db.commit()
         db.refresh(db_paymentLog)
         return db_paymentLog
+    
+    async def get(db: Session, start: int, limit: int):
+        skip = (start - 1) * limit
+    
+        db_paymentLogs = db.query(model.Payment).limit(limit).offset(skip).all()
+        
+        return db_paymentLogs

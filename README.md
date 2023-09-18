@@ -295,6 +295,81 @@
 
     true
 
+## Get Payment Logs(GET) - /get_paymentLog?start=1&limit=10
+
+1. Request Header
+
+    Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidGVjaGJ1c2guZGV2QGdtYWlsLmNvbSIsImV4cGlyZXMiOjE2OTQ3MDI5OTguMzQyODc2N30.4X4VNd90iAIdQegoiGqv0EtChDB9HtFHU0BfW5TSjKg
+
+2. Request parameters
+
+    start, limit
+
+3. Response
+
+    [
+        {
+            "user_id": 6,
+            "description": "This is for the test of payment Log Save",
+            "payment_type": "paypal",
+            "created_at": "2023-9-14",
+            "currency_type": "usd",
+            "id": 1,
+            "amount": 29,
+            "status": "pending"
+        },
+        {
+            "user_id": 6,
+            "description": "This is for the test of Payment Log Save",
+            "payment_type": "paypal",
+            "created_at": "2023-9-14",
+            "currency_type": "usd",
+            "id": 2,
+            "amount": 29,
+            "status": "pending"
+        },
+        {
+            "user_id": 6,
+            "description": "fsdf fdsfdsa fdsfsda",
+            "payment_type": "paypal",
+            "created_at": "2023-9-14",
+            "currency_type": "usd",
+            "id": 3,
+            "amount": 29,
+            "status": "pending"
+        },
+        {
+            "user_id": 6,
+            "description": "This is for the test of payment Log Save",
+            "payment_type": "paypal",
+            "created_at": "2023-9-18",
+            "currency_type": "usd",
+            "id": 4,
+            "amount": 29,
+            "status": "pending"
+        },
+        {
+            "user_id": 6,
+            "description": "This is for the test of payment Log Save",
+            "payment_type": "paypal",
+            "created_at": "2023-9-18",
+            "currency_type": "cads",
+            "id": 5,
+            "amount": 29,
+            "status": "pending"
+        },
+        {
+            "user_id": 6,
+            "description": "Hello, World!",
+            "payment_type": "paypal",
+            "created_at": "2023-9-18",
+            "currency_type": "cads",
+            "id": 6,
+            "amount": 29,
+            "status": "pending"
+        }
+    ]
+
 
 
 
