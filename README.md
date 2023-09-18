@@ -269,8 +269,32 @@
 
     Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidGVjaGJ1c2guZGV2QGdtYWlsLmNvbSIsImV4cGlyZXMiOjE2OTQ3MDI5OTguMzQyODc2N30.4X4VNd90iAIdQegoiGqv0EtChDB9HtFHU0BfW5TSjKg
 
-2. Response
+2. Request Body
+
+    {
+        "information": "This is for the test of intervention request"
+    }
+
+3. Response
 
     true
+
+## Handle Messaging Request(POST)
+
+1. Request Header
+
+    Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidGVjaGJ1c2guZGV2QGdtYWlsLmNvbSIsImV4cGlyZXMiOjE2OTQ3MDI5OTguMzQyODc2N30.4X4VNd90iAIdQegoiGqv0EtChDB9HtFHU0BfW5TSjKg
+
+2. Request Body
+
+    {
+        "messaging": "This is for the test of messaging"
+    }
+
+3. Response
+
+    true
+
+
 
 

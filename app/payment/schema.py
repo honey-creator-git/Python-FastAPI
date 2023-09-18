@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class PaymentBase(BaseModel):
     user_id: int
     amount: int
+    description: str
     currency_type: str
     payment_type: str
     status: str
