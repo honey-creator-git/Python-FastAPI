@@ -1,21 +1,20 @@
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-
 from app.auth.auth_bearer import JWTBearer
 from app.auth.auth_handler import signJWT
-
 from sqlalchemy.orm import Session
-import app.user.schema as userSchema
-import app.payment.schema as paymentSchema
-import app.googleSearchResult.schema as googleSearchResultSchema
 from database import get_db
 from app.user.repository import UserRepo
 from app.payment.repository import PaymentLogRepo
 from app.googleSearchResult.repository import GoogleSearchResult
+from app.sentimentResult.repository import SentimentResult
 from decouple import config
-
 from serpapi import GoogleSearch
+from transformers import pipeline
 
+import app.user.schema as userSchema
+import app.payment.schema as paymentSchema
+import app.sentimentResult.schema as sentimentSchema
 import stripe
 
 app = FastAPI()
@@ -28,7 +27,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+sentiment_pipeline = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-sentiment-latest")
+
 stripe.api_key = config("STRIPE_SECRET")
+
+def analysis_sentiment(text):
+    data = [text]
+    analysis = sentiment_pipeline(data)[0]
+    response = { "text": text, "label": analysis['label'], "score": analysis['score'] }
+    
+    return response
 
 # route handlers
     
@@ -142,14 +150,34 @@ async def google_search(search_keyword: str, start:int, num: int, db: Session=De
                 "link": organic_result["link"],
                 "snippet": organic_result["snippet"]
             }
+            sentiment_result = analysis_sentiment(googleSearchResult["snippet"])
+            sentimentResult = {
+                "keyword": googleSearchResult["snippet"],
+                "label": sentiment_result["label"],
+                "score": str(sentiment_result["score"])
+            }
+            createdSentimentResult = await SentimentResult.create(db=db, sentimentResult=sentimentResult)
             createdGoogleSearchResult = await GoogleSearchResult.create(db=db, googleSearchResult=googleSearchResult)
             print("Created_Google_Search_Result => ", createdGoogleSearchResult)
+            print("Created Sentiment Result => ", createdSentimentResult)
             
             count = count + 1
 
         return {
             "search_id": search_id,
             "status": "Search successfully!!!"
-        }    
+        }
+        
+@app.post("/sentiment-analysis", tags=["Sentiment Analysis"])
+async def sentiment_analysis(sentiment_request: sentimentSchema.SentimentResult, db: Session = Depends(get_db)):
+    """
+        Sentiment Analysis based on Google Search Result
+    """
+    
+    sentiment_result = analysis_sentiment(sentiment_request.keyword)
+    
+    print("Sentiment Result => ", sentiment_result)
+    
+    
     
     
