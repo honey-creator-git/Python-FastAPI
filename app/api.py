@@ -14,7 +14,6 @@ from transformers import pipeline
 
 import app.user.schema as userSchema
 import app.payment.schema as paymentSchema
-import app.sentimentResult.schema as sentimentSchema
 import stripe
 
 app = FastAPI()
@@ -168,15 +167,23 @@ async def google_search(search_keyword: str, start:int, num: int, db: Session=De
             "status": "Search successfully!!!"
         }
         
-@app.post("/sentiment-analysis", tags=["Sentiment Analysis"])
-async def sentiment_analysis(sentiment_request: sentimentSchema.SentimentResult, db: Session = Depends(get_db)):
+@app.get("/sentiment_analysis", dependencies=[Depends(JWTBearer())], tags=["SentimentAnalysis"])
+async def get_sentiment_result(page: int, limit: int, db: Session=Depends(get_db)):
     """
-        Sentiment Analysis based on Google Search Result
+        Get the Sentiment Analysis Results
     """
     
-    sentiment_result = analysis_sentiment(sentiment_request.keyword)
+    db_sentiment_analysis_result = await SentimentResult.get(db=db, page=page, limit=limit)
     
-    print("Sentiment Result => ", sentiment_result)
+    return db_sentiment_analysis_result
+
+@app.post("/handle_intervention", dependencies=[Depends(JWTBearer())], tags=["Intervention"])
+async def handle_intervention(db: Session = Depends(get_db)):
+    """
+        Handle Intervention
+    """
+    
+    return 1
     
     
     

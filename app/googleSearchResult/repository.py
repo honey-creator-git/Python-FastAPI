@@ -14,7 +14,16 @@ class GoogleSearchResult:
             created_month = str(created_at.month)
             created_day = str(created_at.day)
             
-            db_googleSearchResult = model.GoogleSearchResult(search_id=googleSearchResult['search_id'], title=googleSearchResult['title'], link=googleSearchResult['link'], snippet=googleSearchResult['snippet'], created_at=created_year+"-"+created_month+"-"+created_day)
+            hour = created_at.hour
+            if(hour < 10):
+                created_hr = str("0"+hour)
+            created_hr = str(hour)
+            minutes = created_at.minute
+            if(minutes < 10):
+                created_min = str("0"+minutes)
+            created_min = str(minutes)
+            
+            db_googleSearchResult = model.GoogleSearchResult(search_id=googleSearchResult['search_id'], title=googleSearchResult['title'], link=googleSearchResult['link'], snippet=googleSearchResult['snippet'], created_at=created_year+"-"+created_month+"-"+created_day+" "+created_hr+":"+created_min)
             db.add(db_googleSearchResult)
             db.commit()
             db.refresh(db_googleSearchResult)
@@ -31,7 +40,16 @@ class GoogleSearchResult:
         updated_month = str(updated_at.month)
         updated_day = str(updated_at.day)
         
-        db_google_search_result.updated_at = updated_year+"-"+updated_month+"-"+updated_day
+        hour = updated_at.hour
+        if(hour < 10):
+            updated_hr = str("0"+hour)
+        updated_hr = str(hour)
+        minutes = updated_at.minute
+        if(minutes < 10):
+            updated_min = str("0"+minutes)
+        updated_min = str(minutes)
+        
+        db_google_search_result.updated_at = updated_year+"-"+updated_month+"-"+updated_day+" "+updated_hr+":"+updated_min
         db.add(db_google_search_result)
         db.commit()
         db.refresh(db_google_search_result)
