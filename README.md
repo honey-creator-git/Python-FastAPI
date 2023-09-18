@@ -133,3 +133,38 @@
             "amount": 29
         }
     }
+
+## Google Search with keyword(GET) - /googleSearch/{key_word}?start={start_num}&num={limit}
+
+1. Request Header
+
+    Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidGVjaGJ1c2guZGV2QGdtYWlsLmNvbSIsImV4cGlyZXMiOjE2OTQ3MDI5OTguMzQyODc2N30.4X4VNd90iAIdQegoiGqv0EtChDB9HtFHU0BfW5TSjKg
+
+2. Request Parameters
+
+    keyword, start_num, limit
+
+3. Response
+
+    {
+        "search_id": "6507a408f8f5f7a298f4d6c3",
+        "status": "Search successfully!!!"
+    }
+
+4. In this request, sentiment is handled with the result of Google Search API with snippet.
+
+    Google Search Result has the below fields
+
+        - search_id
+        - title
+        - link
+        - snippet
+    
+    Sentiment Result has the below fiels
+
+        - keyword
+        - label
+        - score
+
+    Keyword = Snippet
+
