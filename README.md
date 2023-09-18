@@ -168,3 +168,109 @@
 
     Keyword = Snippet
 
+## Get Sentiment Analaysis Reslts(GET)
+
+1. Request Header
+
+    Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidGVjaGJ1c2guZGV2QGdtYWlsLmNvbSIsImV4cGlyZXMiOjE2OTQ3MDI5OTguMzQyODc2N30.4X4VNd90iAIdQegoiGqv0EtChDB9HtFHU0BfW5TSjKg
+
+2. Request parameters
+
+    page=1&limit=10
+
+3. Response
+
+    [
+        {
+            "label": "neutral",
+            "title": "Fun Facts About Lions • African Lion Information For Kids",
+            "link": "https://www.folly-farm.co.uk/zoo/meet-the-zoo-animals/african-lion/",
+            "snippet": "Find out more about African lions, including where do they live? What do they eat? How long do they sleep for? Lots of fun facts for kids!",
+            "created_at": "2023-9-17",
+            "updated_at": "2023-9-17"
+        },
+        {
+            "label": "neutral",
+            "title": "Lion Movie",
+            "link": "https://www.facebook.com/LionMovie/",
+            "snippet": "Lion Movie. 236783 likes · 14 talking about this. Adapted from the non-fiction book A Long Way Home by Saroo Brierley, LION is about a five-year-old...",
+            "created_at": "2023-9-17",
+            "updated_at": "2023-9-17"
+        },
+        {
+            "label": "neutral",
+            "title": "Lion - definition of lion by The Free Dictionary",
+            "link": "https://www.thefreedictionary.com/lion",
+            "snippet": "Define lion. lion synonyms, lion pronunciation, lion translation, English dictionary definition of lion. n. 1. A large carnivorous feline mammal of Africa ...",
+            "created_at": "2023-9-17",
+            "updated_at": "2023-9-17"
+        },
+        {
+            "label": "neutral",
+            "title": "Lion - Wiki - Golden",
+            "link": "https://golden.com/wiki/Lion-XK5XX",
+            "snippet": "Final Fight of the Lion King in Epic Battle Full Movie | Wildest Africa - Epic Wildlife Videos. https://www.youtube.com/watch?v=6WvJoSbtnN4.",
+            "created_at": "2023-9-17",
+            "updated_at": "2023-9-17"
+        },
+        {
+            "label": "neutral",
+            "title": "Lion Brand Yarn: Yarn and Free Knitting and Crochet Patterns",
+            "link": "https://www.lionbrand.com/",
+            "snippet": "Lion Brand Yarn is America's oldest craft yarn company with 80+ active yarn families. Find your next project by searching over 8000 free knitting and ...",
+            "created_at": "2023-9-17",
+            "updated_at": "2023-9-17"
+        },
+        {
+            "label": "neutral",
+            "title": "Where do lions live? Facts about lions' habitats and other ...",
+            "link": "https://www.usatoday.com/story/news/2023/01/08/where-do-lions-live-habitat/10927",
+            "snippet": "The Asiatic lion lives in the Gir Forest of western India. And while you might assume that the African lions from west and central Africa are ...",
+            "created_at": "2023-9-17",
+            "updated_at": "2023-9-17"
+        },
+        {
+            "label": "neutral",
+            "title": "Disney THE LION KING | On Broadway Since 1997",
+            "link": "https://lionking.com/",
+            "snippet": "Disney's official site for tickets to the landmark Broadway musical THE LION KING in New York City and on tour across North America.",
+            "created_at": "2023-9-17",
+            "updated_at": "2023-9-17"
+        },
+        {
+            "label": "neutral",
+            "title": "Asiatic lions",
+            "link": "https://www.londonzoo.org/whats-here/animals/asiatic-lion",
+            "snippet": "Asiatic lion facts. There are only several hundred Asiatic lions in the wild, and they only live in the Gir Forest, India, in an area that is smaller than ...",
+            "created_at": "2023-9-17",
+            "updated_at": "2023-9-17"
+        },
+        {
+            "label": "neutral",
+            "title": "Detroit Lions Football - Lions News, Scores, Stats, Rumors ...",
+            "link": "https://www.espn.com/nfl/team/_/name/det/detroit-lions",
+            "snippet": "Visit ESPN to view the latest Detroit Lions news, scores, stats, standings, rumors, and more.",
+            "created_at": "2023-9-17",
+            "updated_at": "2023-9-17"
+        },
+        {
+            "label": "neutral",
+            "title": "Lion - LDOCE",
+            "link": "https://www.ldoceonline.com/dictionary/lion",
+            "snippet": "lion meaning, definition, what is lion: a large animal of the cat family that li...: Learn more.",
+            "created_at": "2023-9-17",
+            "updated_at": "2023-9-17"
+        }
+    ]
+
+## Handle Intervention Request(POST)
+
+1. Request Header
+
+    Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidGVjaGJ1c2guZGV2QGdtYWlsLmNvbSIsImV4cGlyZXMiOjE2OTQ3MDI5OTguMzQyODc2N30.4X4VNd90iAIdQegoiGqv0EtChDB9HtFHU0BfW5TSjKg
+
+2. Response
+
+    true
+
+

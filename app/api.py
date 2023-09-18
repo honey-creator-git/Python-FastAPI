@@ -14,6 +14,7 @@ from transformers import pipeline
 
 import app.user.schema as userSchema
 import app.payment.schema as paymentSchema
+import app.intervention.schema as interventionSchema
 import stripe
 
 app = FastAPI()
@@ -178,12 +179,12 @@ async def get_sentiment_result(page: int, limit: int, db: Session=Depends(get_db
     return db_sentiment_analysis_result
 
 @app.post("/handle_intervention", dependencies=[Depends(JWTBearer())], tags=["Intervention"])
-async def handle_intervention(db: Session = Depends(get_db)):
+async def handle_intervention(handleInterventionRequest:interventionSchema.HandleIntervention, db: Session = Depends(get_db)):
     """
         Handle Intervention
     """
     
-    return 1
+    return True
     
     
     

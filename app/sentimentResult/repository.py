@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from . import model, schema
 import app.googleSearchResult.model as googleSearchResult
 import datetime
